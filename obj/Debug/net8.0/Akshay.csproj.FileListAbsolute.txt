@@ -1,0 +1,15 @@
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\bin\Debug\net8.0\Akshay.exe
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\bin\Debug\net8.0\Akshay.deps.json
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\bin\Debug\net8.0\Akshay.runtimeconfig.json
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\bin\Debug\net8.0\Akshay.dll
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\bin\Debug\net8.0\Akshay.pdb
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\obj\Debug\net8.0\Akshay.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\obj\Debug\net8.0\Akshay.AssemblyInfoInputs.cache
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\obj\Debug\net8.0\Akshay.AssemblyInfo.cs
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\obj\Debug\net8.0\Akshay.csproj.CoreCompileInputs.cache
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\obj\Debug\net8.0\Akshay.dll
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\obj\Debug\net8.0\refint\Akshay.dll
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\obj\Debug\net8.0\Akshay.pdb
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\obj\Debug\net8.0\Akshay.genruntimeconfig.cache
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\obj\Debug\net8.0\ref\Akshay.dll
+C:\Users\Akshay.Ruparelia\source\repos\Akshay\Akshay\obj\Debug\net8.0\Akshay.sourcelink.json
