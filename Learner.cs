@@ -14,6 +14,7 @@ namespace Akshay
             Name = Name;
         }
 
+        //Learner method
         public Learner(string name)
         {
             Name = name;
