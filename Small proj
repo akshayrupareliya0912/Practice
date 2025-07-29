@@ -44,11 +44,11 @@ namespace prac
                 if (cart.Count > 0)
                 {
                     var removed = cart.Pop();
-                    Console.WriteLine($"↩️ Removed {removed.Name} from cart.");
+                    Console.WriteLine($"↩ Removed {removed.Name} from cart.");
                 }
                 else
                 {
-                    Console.WriteLine("⚠️ Cart is empty.");
+                    Console.WriteLine(" Cart is empty.");
                 }
             }
 
@@ -56,7 +56,7 @@ namespace prac
             {
                 if (cart.Count == 0)
                 {
-                    Console.WriteLine("🛑 No items in cart.");
+                    Console.WriteLine(" No items in cart.");
                     return;
                 }
 
@@ -72,12 +72,12 @@ namespace prac
                 orderHistory.AddLast(orderSummary);
                 orderQueue.Enqueue(orderSummary);
 
-                Console.WriteLine($"✅ Order placed: {orderSummary}");
+                Console.WriteLine($" Order placed: {orderSummary}");
             }
 
             public void ShowOrderHistory()
             {
-                Console.WriteLine($"\n📜 Order History for {Name}:");
+                Console.WriteLine($"\n Order History for {Name}:");
                 foreach (var order in orderHistory)
                 {
                     Console.WriteLine($"- {order}");
@@ -109,7 +109,7 @@ namespace prac
 
             public void ShowMenu()
             {
-                Console.WriteLine("\n📋 Menu:");
+                Console.WriteLine("\n Menu:");
                 foreach (var kvp in CategoryMap)
                 {
                     Console.WriteLine($"-- {kvp.Key} --");
@@ -120,7 +120,7 @@ namespace prac
 
             public void ShowOrdersInPrep()
             {
-                Console.WriteLine("\n🍳 Orders in preparation:");
+                Console.WriteLine("\n Orders in preparation:");
                 foreach (var order in OrdersInPreparation)
                 {
                     Console.WriteLine($"- {order}");
@@ -192,13 +192,13 @@ namespace prac
                 if (Attendees.Count < Capacity)
                 {
                     Attendees.Add(studentId);
-                    Console.WriteLine($"✅ Student {studentId} registered for {EventName}");
+                    Console.WriteLine($" Student {studentId} registered for {EventName}");
                     return true;
                 }
                 else
                 {
                     Waitlist.Enqueue(studentId);
-                    Console.WriteLine($"📋 {EventName} is full. Student {studentId} added to waitlist.");
+                    Console.WriteLine($"{EventName} is full. Student {studentId} added to waitlist.");
                     return false;
                 }
             }
@@ -208,11 +208,11 @@ namespace prac
                 if (Attendees.Contains(studentId))
                 {
                     AttendanceOrder.AddLast(studentId);
-                    Console.WriteLine($"📥 Student {studentId} checked in to {EventName}");
+                    Console.WriteLine($" Student {studentId} checked in to {EventName}");
                 }
                 else
                 {
-                    Console.WriteLine($"❌ Student {studentId} is not registered for {EventName}");
+                    Console.WriteLine($" Student {studentId} is not registered for {EventName}");
                 }
             }
         }
@@ -226,7 +226,7 @@ namespace prac
                 if (!Events.ContainsKey(name))
                 {
                     Events.Add(name, new Event(name, capacity));
-                    Console.WriteLine($"🎉 Event '{name}' created with capacity {capacity}");
+                    Console.WriteLine($" Event '{name}' created with capacity {capacity}");
                 }
             }
 
@@ -366,26 +366,26 @@ namespace prac
             public void AddTreatment(string treatment)
             {
                 treatments.Add(treatment);
-                Console.WriteLine($"💊 Treatment '{treatment}' added.");
+                Console.WriteLine($" Treatment '{treatment}' added.");
             }
 
             public void RegisterPatient(Patient patient)
             {
                 waitingQueue.Enqueue(patient);
-                Console.WriteLine($"📝 Patient {patient.Name} registered and added to waiting queue.");
+                Console.WriteLine($" Patient {patient.Name} registered and added to waiting queue.");
             }
 
             public void AssignNextPatient(string doctorName)
             {
                 if (waitingQueue.Count == 0)
                 {
-                    Console.WriteLine("⛔ No patients in waiting queue.");
+                    Console.WriteLine(" No patients in waiting queue.");
                     return;
                 }
 
                 if (!doctorAssignments.ContainsKey(doctorName))
                 {
-                    Console.WriteLine($"❌ Doctor {doctorName} does not exist.");
+                    Console.WriteLine($" Doctor {doctorName} does not exist.");
                     return;
                 }
 
@@ -393,14 +393,14 @@ namespace prac
                 doctorAssignments[doctorName].Add(patient);
                 undoStack.Push((doctorName, patient));
 
-                Console.WriteLine($"✅ Patient {patient.Name} assigned to Dr. {doctorName}.");
+                Console.WriteLine($" Patient {patient.Name} assigned to Dr. {doctorName}.");
             }
 
             public void UndoLastAssignment()
             {
                 if (undoStack.Count == 0)
                 {
-                    Console.WriteLine("⚠️ No assignments to undo.");
+                    Console.WriteLine(" No assignments to undo.");
                     return;
                 }
 
@@ -408,21 +408,21 @@ namespace prac
                 doctorAssignments[doctor].Remove(patient);
                 waitingQueue.Enqueue(patient);
 
-                Console.WriteLine($"↩️ Undo: Patient {patient.Name} removed from Dr. {doctor} and returned to queue.");
+                Console.WriteLine($"↩ Undo: Patient {patient.Name} removed from Dr. {doctor} and returned to queue.");
             }
 
             public void TreatPatient(string doctorName, string disease)
             {
                 if (!doctorAssignments.ContainsKey(doctorName))
                 {
-                    Console.WriteLine($"❌ Doctor {doctorName} does not exist.");
+                    Console.WriteLine($" Doctor {doctorName} does not exist.");
                     return;
                 }
 
                 var assigned = doctorAssignments[doctorName];
                 if (assigned.Count == 0)
                 {
-                    Console.WriteLine($"⚠️ No patients assigned to Dr. {doctorName}.");
+                    Console.WriteLine($" No patients assigned to Dr. {doctorName}.");
                     return;
                 }
 
@@ -446,7 +446,7 @@ namespace prac
 
             public void ShowWaitingQueue()
             {
-                Console.WriteLine("\n⏳ Waiting Queue:");
+                Console.WriteLine("\n Waiting Queue:");
                 foreach (var patient in waitingQueue)
                 {
                     Console.WriteLine($"- {patient.Name}");
@@ -455,19 +455,19 @@ namespace prac
 
             public void ShowUniqueDiseases()
             {
-                Console.WriteLine("\n🦠 Unique diseases treated: " + string.Join(", ", uniqueDiseases));
+                Console.WriteLine("\n Unique diseases treated: " + string.Join(", ", uniqueDiseases));
             }
 
             public void ShowAllDoctors()
             {
-                Console.WriteLine("\n👩‍⚕️ Doctors List:");
+                Console.WriteLine("\n Doctors List:");
                 foreach (var doc in doctors)
                     Console.WriteLine($"- {doc.Name}");
             }
 
             public void ShowTreatments()
             {
-                Console.WriteLine("\n💊 Available Treatments:");
+                Console.WriteLine("\n Available Treatments:");
                 foreach (var t in treatments)
                     Console.WriteLine($"- {t}");
             }
