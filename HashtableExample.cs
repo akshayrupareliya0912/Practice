@@ -1,17 +1,17 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections; 
+using System.Collections;
 
 namespace Akshay
 {
     internal class HashtableExample
     {
-        static void Main(string[] args) 
+        static void Main(string[] args)
         {
-           Hashtable hs = new Hashtable();
+            Hashtable hs = new Hashtable();
 
             hs.Add("Name", "Akshay");
             hs.Add("Age", 25);
@@ -24,11 +24,17 @@ namespace Akshay
             foreach (object i in hs.Keys)
             {
                 Console.WriteLine(i + " : " + hs[i]);
-                if (i ="Languages")
+                if (i.Equals("Languages"))
                 {
-                    Console.WriteLine("C#", "Java", "Flutter", ".Net");
+                    List<string> langs = (List<string>)hs[i];
+                    Console.WriteLine("Languages");
+                    foreach (string lang in langs)
+                    {
+                        Console.WriteLine("- " + lang);
+                    }
                 }
             }
         }
     }
 }
+*/
