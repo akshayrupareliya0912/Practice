@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +24,9 @@ namespace Akshay
             foreach (object i in hs.Keys)
             {
                 Console.WriteLine(i + " : " + hs[i]);
+
                 if (i.Equals("Languages"))
+
                 {
                     List<string> langs = (List<string>)hs[i];
                     Console.WriteLine("Languages");
@@ -37,4 +39,3 @@ namespace Akshay
         }
     }
 }
-*/

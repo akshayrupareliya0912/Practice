@@ -1,0 +1,732 @@
+/*using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace prac
+{
+    internal class Online_Food_Ordering_System
+    {
+        public class FoodItem
+        {
+            public string Name { get; set; }
+            public string Category { get; set; }
+
+            public FoodItem(string name, string category)
+            {
+                Name = name;
+                Category = category;
+            }
+
+            public override string ToString() => $"{Name} ({Category})";
+        }
+        public class Customer
+        {
+            public string Name { get; set; }
+            private Stack<FoodItem> cart = new Stack<FoodItem>();
+            private LinkedList<string> orderHistory = new LinkedList<string>();
+            private HashSet<string> uniqueOrderedItems = new HashSet<string>();
+
+            public Customer(string name)
+            {
+                Name = name;
+            }
+
+            public void AddToCart(FoodItem item)
+            {
+                cart.Push(item);
+                Console.WriteLine($"🛒 {item.Name} added to cart.");
+            }
+
+            public void UndoLastAdd()
+            {
+                if (cart.Count > 0)
+                {
+                    var removed = cart.Pop();
+                    Console.WriteLine($"↩ Removed {removed.Name} from cart.");
+                }
+                else
+                {
+                    Console.WriteLine(" Cart is empty.");
+                }
+            }
+
+            public void PlaceOrder(Queue<string> orderQueue)
+            {
+                if (cart.Count == 0)
+                {
+                    Console.WriteLine(" No items in cart.");
+                    return;
+                }
+
+                List<string> order = new List<string>();
+                while (cart.Count > 0)
+                {
+                    var item = cart.Pop();
+                    order.Add(item.Name);
+                    uniqueOrderedItems.Add(item.Name);
+                }
+
+                string orderSummary = string.Join(", ", order);
+                orderHistory.AddLast(orderSummary);
+                orderQueue.Enqueue(orderSummary);
+
+                Console.WriteLine($" Order placed: {orderSummary}");
+            }
+
+            public void ShowOrderHistory()
+            {
+                Console.WriteLine($"\n Order History for {Name}:");
+                foreach (var order in orderHistory)
+                {
+                    Console.WriteLine($"- {order}");
+                }
+            }
+
+            public void ShowUniqueOrderedItems()
+            {
+                Console.WriteLine($"\n🍴 Unique items ordered by {Name}: {string.Join(", ", uniqueOrderedItems)}");
+            }
+        }
+        public class FoodSystem
+        {
+            public List<FoodItem> AvailableItems = new List<FoodItem>();
+            public Dictionary<string, List<FoodItem>> CategoryMap = new Dictionary<string, List<FoodItem>>();
+            public Queue<string> OrdersInPreparation = new Queue<string>();
+
+            public void AddFoodItem(string name, string category)
+            {
+                var item = new FoodItem(name, category);
+                AvailableItems.Add(item);
+
+                if (!CategoryMap.ContainsKey(category))
+                    CategoryMap[category] = new List<FoodItem>();
+
+                CategoryMap[category].Add(item);
+                Console.WriteLine($"🍽️ Added {item.Name} to {category}");
+            }
+
+            public void ShowMenu()
+            {
+                Console.WriteLine("\n Menu:");
+                foreach (var kvp in CategoryMap)
+                {
+                    Console.WriteLine($"-- {kvp.Key} --");
+                    foreach (var item in kvp.Value)
+                        Console.WriteLine($"   - {item.Name}");
+                }
+            }
+
+            public void ShowOrdersInPrep()
+            {
+                Console.WriteLine("\n Orders in preparation:");
+                foreach (var order in OrdersInPreparation)
+                {
+                    Console.WriteLine($"- {order}");
+                }
+            }
+        }
+        public static void Main(string[] args)
+        {
+            FoodSystem foodSystem = new FoodSystem();
+            foodSystem.AddFoodItem("Burger", "Fast Food");
+            foodSystem.AddFoodItem("Pizza", "Fast Food");
+            foodSystem.AddFoodItem("Pasta", "Italian");
+            foodSystem.AddFoodItem("Salad", "Healthy");
+
+            foodSystem.ShowMenu();
+
+            Customer customer = new Customer("Alice");
+            customer.AddToCart(new FoodItem("Burger", "Fast Food"));
+            customer.AddToCart(new FoodItem("Pizza", "Fast Food"));
+            customer.UndoLastAdd();
+            customer.PlaceOrder(foodSystem.OrdersInPreparation);
+            customer.ShowOrderHistory();
+            customer.ShowUniqueOrderedItems();
+
+            foodSystem.ShowOrdersInPrep();
+        }
+    }
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+EVENT
+/*using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace prac
+{
+    internal class Event_Tracker_System
+    {
+        class Event
+        {
+            public string EventName { get; set; }
+            public int Capacity { get; set; }
+            public LinkedList<int> AttendanceOrder { get; private set; } = new LinkedList<int>();
+            public SortedSet<int> Attendees { get; private set; } = new SortedSet<int>();
+            public Queue<int> Waitlist { get; private set; } = new Queue<int>();
+
+            public Event(string name, int capacity)
+            {
+                EventName = name;
+                Capacity = capacity;
+            }
+
+            public bool Register(int studentId)
+            {
+                if (Attendees.Count < Capacity)
+                {
+                    Attendees.Add(studentId);
+                    Console.WriteLine($" Student {studentId} registered for {EventName}");
+                    return true;
+                }
+                else
+                {
+                    Waitlist.Enqueue(studentId);
+                    Console.WriteLine($"{EventName} is full. Student {studentId} added to waitlist.");
+                    return false;
+                }
+            }
+
+            public void CheckIn(int studentId)
+            {
+                if (Attendees.Contains(studentId))
+                {
+                    AttendanceOrder.AddLast(studentId);
+                    Console.WriteLine($" Student {studentId} checked in to {EventName}");
+                }
+                else
+                {
+                    Console.WriteLine($" Student {studentId} is not registered for {EventName}");
+                }
+            }
+        }
+        class EventManager
+        {
+            public SortedList<string, Event> Events = new SortedList<string, Event>();
+            public HashSet<int> GlobalAttendance = new HashSet<int>();
+
+            public void CreateEvent(string name, int capacity)
+            {
+                if (!Events.ContainsKey(name))
+                {
+                    Events.Add(name, new Event(name, capacity));
+                    Console.WriteLine($" Event '{name}' created with capacity {capacity}");
+                }
+            }
+
+            public void RegisterStudent(string eventName, int studentId)
+            {
+                if (Events.ContainsKey(eventName))
+                {
+                    bool registered = Events[eventName].Register(studentId);
+                }
+            }
+
+            public void CheckInStudent(string eventName, int studentId)
+            {
+                if (Events.ContainsKey(eventName))
+                {
+                    Events[eventName].CheckIn(studentId);
+                    GlobalAttendance.Add(studentId); // Track unique attendance
+                }
+            }
+
+            public void PrintEventStatus(string eventName)
+            {
+                if (Events.ContainsKey(eventName))
+                {
+                    Event ev = Events[eventName];
+                    Console.WriteLine($"\n📋 {eventName} - Registered: {ev.Attendees.Count}/{ev.Capacity}");
+                    Console.WriteLine("Alphabetical Attendees (SortedSet): " + string.Join(", ", ev.Attendees));
+                    Console.WriteLine("Attendance Order (LinkedList): " + string.Join(" ➝ ", ev.AttendanceOrder));
+                    Console.WriteLine("Waitlist (Queue): " + string.Join(", ", ev.Waitlist));
+                }
+            }
+
+            public void PrintGlobalAttendance()
+            {
+                Console.WriteLine("\n🌐 Students who attended at least one event: " + string.Join(", ", GlobalAttendance));
+            }
+        }
+
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                EventManager eventManager = new EventManager();
+
+                // Create events
+                eventManager.CreateEvent("Coding Workshop", 3);
+                eventManager.CreateEvent("Art Exhibition", 2);
+
+                // Register students
+                eventManager.RegisterStudent("Coding Workshop", 101);
+                eventManager.RegisterStudent("Coding Workshop", 102);
+                eventManager.RegisterStudent("Coding Workshop", 103);
+                eventManager.RegisterStudent("Coding Workshop", 104); // Should go to waitlist
+                eventManager.RegisterStudent("Art Exhibition", 201);
+                eventManager.RegisterStudent("Art Exhibition", 202);
+                eventManager.RegisterStudent("Art Exhibition", 203); // Should go to waitlist
+
+                // Check in students
+                eventManager.CheckInStudent("Coding Workshop", 101);
+                eventManager.CheckInStudent("Coding Workshop", 102);
+                eventManager.CheckInStudent("Art Exhibition", 201);
+
+                // Print status of events
+                eventManager.PrintEventStatus("Coding Workshop");
+                eventManager.PrintEventStatus("Art Exhibition");
+
+                // Print global attendance
+                eventManager.PrintGlobalAttendance();
+            }
+        }
+    }
+}
+*/
+
+
+
+HOSPITAL
+/*using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace prac
+{
+    internal class Hospital_Patient_Management_System
+    {
+        public class Patient
+        {
+            public string Name { get; set; }
+            public LinkedList<string> TreatmentHistory { get; private set; } = new LinkedList<string>();
+
+            public Patient(string name)
+            {
+                Name = name;
+            }
+
+            public void AddTreatment(string treatment)
+            {
+                TreatmentHistory.AddLast(treatment);
+            }
+
+            public void ShowHistory()
+            {
+                Console.WriteLine($"\n🩺 Treatment history for {Name}:");
+                foreach (var record in TreatmentHistory)
+                {
+                    Console.WriteLine($"- {record}");
+                }
+            }
+        }
+        public class Doctor
+        {
+            public string Name { get; set; }
+
+            public Doctor(string name)
+            {
+                Name = name;
+            }
+        }
+        public class Hospital
+        {
+            private List<Doctor> doctors = new List<Doctor>();
+            private List<string> treatments = new List<string>();
+            private Queue<Patient> waitingQueue = new Queue<Patient>();
+            private SortedDictionary<string, List<Patient>> doctorAssignments = new SortedDictionary<string, List<Patient>>();
+            private Stack<(string doctor, Patient patient)> undoStack = new Stack<(string, Patient)>();
+            private HashSet<string> uniqueDiseases = new HashSet<string>();
+
+            public void AddDoctor(string name)
+            {
+                doctors.Add(new Doctor(name));
+                doctorAssignments[name] = new List<Patient>();
+                Console.WriteLine($"👨‍⚕️ Doctor {name} added.");
+            }
+
+            public void AddTreatment(string treatment)
+            {
+                treatments.Add(treatment);
+                Console.WriteLine($" Treatment '{treatment}' added.");
+            }
+
+            public void RegisterPatient(Patient patient)
+            {
+                waitingQueue.Enqueue(patient);
+                Console.WriteLine($" Patient {patient.Name} registered and added to waiting queue.");
+            }
+
+            public void AssignNextPatient(string doctorName)
+            {
+                if (waitingQueue.Count == 0)
+                {
+                    Console.WriteLine(" No patients in waiting queue.");
+                    return;
+                }
+
+                if (!doctorAssignments.ContainsKey(doctorName))
+                {
+                    Console.WriteLine($" Doctor {doctorName} does not exist.");
+                    return;
+                }
+
+                var patient = waitingQueue.Dequeue();
+                doctorAssignments[doctorName].Add(patient);
+                undoStack.Push((doctorName, patient));
+
+                Console.WriteLine($" Patient {patient.Name} assigned to Dr. {doctorName}.");
+            }
+
+            public void UndoLastAssignment()
+            {
+                if (undoStack.Count == 0)
+                {
+                    Console.WriteLine(" No assignments to undo.");
+                    return;
+                }
+
+                var (doctor, patient) = undoStack.Pop();
+                doctorAssignments[doctor].Remove(patient);
+                waitingQueue.Enqueue(patient);
+
+                Console.WriteLine($"↩ Undo: Patient {patient.Name} removed from Dr. {doctor} and returned to queue.");
+            }
+
+            public void TreatPatient(string doctorName, string disease)
+            {
+                if (!doctorAssignments.ContainsKey(doctorName))
+                {
+                    Console.WriteLine($" Doctor {doctorName} does not exist.");
+                    return;
+                }
+
+                var assigned = doctorAssignments[doctorName];
+                if (assigned.Count == 0)
+                {
+                    Console.WriteLine($" No patients assigned to Dr. {doctorName}.");
+                    return;
+                }
+
+                var patient = assigned[assigned.Count - 1];
+                string treatmentRecord = $"{disease} treated by Dr. {doctorName}";
+
+                patient.AddTreatment(treatmentRecord);
+                uniqueDiseases.Add(disease);
+
+                Console.WriteLine($"🩺 {treatmentRecord} for patient {patient.Name}");
+            }
+
+            public void ShowDoctorAssignments()
+            {
+                Console.WriteLine("\n👨‍⚕️ Doctor-Patient Assignments:");
+                foreach (var entry in doctorAssignments)
+                {
+                    Console.WriteLine($"Dr. {entry.Key}: {string.Join(", ", entry.Value.ConvertAll(p => p.Name))}");
+                }
+            }
+
+            public void ShowWaitingQueue()
+            {
+                Console.WriteLine("\n Waiting Queue:");
+                foreach (var patient in waitingQueue)
+                {
+                    Console.WriteLine($"- {patient.Name}");
+                }
+            }
+
+            public void ShowUniqueDiseases()
+            {
+                Console.WriteLine("\n Unique diseases treated: " + string.Join(", ", uniqueDiseases));
+            }
+
+            public void ShowAllDoctors()
+            {
+                Console.WriteLine("\n Doctors List:");
+                foreach (var doc in doctors)
+                    Console.WriteLine($"- {doc.Name}");
+            }
+
+            public void ShowTreatments()
+            {
+                Console.WriteLine("\n Available Treatments:");
+                foreach (var t in treatments)
+                    Console.WriteLine($"- {t}");
+            }
+        }
+        class Program
+        {
+            static void Main()
+            {
+                var hospital = new Hospital();
+
+                // Add doctors and treatments
+                hospital.AddDoctor("Smith");
+                hospital.AddDoctor("Verma");
+                hospital.AddTreatment("Antibiotics");
+                hospital.AddTreatment("Surgery");
+
+                hospital.ShowAllDoctors();
+                hospital.ShowTreatments();
+
+                // Register patients
+                var p1 = new Patient("Ravi");
+                var p2 = new Patient("Anita");
+                hospital.RegisterPatient(p1);
+                hospital.RegisterPatient(p2);
+
+                hospital.ShowWaitingQueue();
+
+                // Assign and treat
+                hospital.AssignNextPatient("Smith");
+                hospital.AssignNextPatient("Verma");
+                hospital.TreatPatient("Smith", "Fever");
+                hospital.TreatPatient("Verma", "Fracture");
+
+                p1.ShowHistory();
+                p2.ShowHistory();
+
+                hospital.ShowDoctorAssignments();
+                hospital.ShowUniqueDiseases();
+
+                // Undo functionality
+                hospital.UndoLastAssignment();
+                hospital.ShowDoctorAssignments();
+                hospital.ShowWaitingQueue();
+            }
+        }
+
+    }
+}
+*/
+
+
+Airline
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace prac
+{
+    internal class Airline_Ticket_Booking_and_Check_in_System
+    {
+        public class Flight
+        {
+            public string FlightNumber { get; set; }
+            public string Destination { get; set; }
+            public int Capacity { get; set; }
+
+            public Flight(string flightNumber, string destination, int capacity)
+            {
+                FlightNumber = flightNumber;
+                Destination = destination;
+                Capacity = capacity;
+            }
+
+            public override string ToString() => $"{FlightNumber} to {Destination}";
+        }
+        public class Passenger
+        {
+            public string Name { get; set; }
+            public LinkedList<string> TravelHistory { get; private set; } = new LinkedList<string>();
+            public SortedSet<string> VisitedDestinations { get; private set; } = new SortedSet<string>();
+
+            public Passenger(string name)
+            {
+                Name = name;
+            }
+
+            public void AddTrip(string flightInfo, string destination)
+            {
+                TravelHistory.AddLast(flightInfo);
+                VisitedDestinations.Add(destination);
+            }
+
+            public void ShowTravelHistory()
+            {
+                Console.WriteLine($" Travel History for {Name}:");
+                foreach (var trip in TravelHistory)
+                    Console.WriteLine($"- {trip}");
+            }
+
+            public void ShowVisitedDestinations()
+            {
+                Console.WriteLine($" Unique Destinations for {Name}: {string.Join(", ", VisitedDestinations)}");
+            }
+        }
+        public class AirlineSystem
+        {
+            public List<Flight> AllFlights = new List<Flight>();
+            public SortedList<string, Flight> FlightsSorted = new SortedList<string, Flight>();
+            public Dictionary<string, List<Passenger>> Bookings = new Dictionary<string, List<Passenger>>();
+            public Dictionary<string, Queue<Passenger>> StandByList = new Dictionary<string, Queue<Passenger>>();
+            public Stack<(string flightNo, Passenger passenger)> BookingHistory = new Stack<(string, Passenger)>();
+
+            public void AddFlight(string number, string destination, int capacity)
+            {
+                var flight = new Flight(number, destination, capacity);
+                AllFlights.Add(flight);
+                FlightsSorted[number] = flight;
+                Bookings[number] = new List<Passenger>();
+                StandByList[number] = new Queue<Passenger>();
+
+                Console.WriteLine($" Flight added: {flight}");
+            }
+
+            public void BookTicket(string flightNo, Passenger passenger)
+            {
+                if (!Bookings.ContainsKey(flightNo))
+                {
+                    Console.WriteLine( "Flight does not exist.");
+                    return;
+                }
+
+                var bookedList = Bookings[flightNo];
+                var flight = FlightsSorted[flightNo];
+
+                if (bookedList.Count < flight.Capacity)
+                {
+                    bookedList.Add(passenger);
+                    BookingHistory.Push((flightNo, passenger));
+                    Console.WriteLine($" {passenger.Name} booked {flight}");
+                }
+                else
+                {
+                    StandByList[flightNo].Enqueue(passenger);
+                    Console.WriteLine($" Flight full. {passenger.Name} added to standby for {flight}");
+                }
+            }
+
+            public void CancelBooking(string flightNo, string passengerName)
+            {
+                if (Bookings.TryGetValue(flightNo, out var bookedList))
+                {
+                    var passenger = bookedList.Find(p => p.Name == passengerName);
+                    if (passenger != null)
+                    {
+                        bookedList.Remove(passenger);
+                        Console.WriteLine($" Booking cancelled for {passengerName} on flight {flightNo}");
+
+                        // Move from standby to booked if available
+                        if (StandByList[flightNo].Count > 0)
+                        {
+                            var standbyPassenger = StandByList[flightNo].Dequeue();
+                            Bookings[flightNo].Add(standbyPassenger);
+                            Console.WriteLine($" {standbyPassenger.Name} moved from standby to booked on {flightNo}");
+                        }
+                    }
+                    else Console.WriteLine(" Passenger not found.");
+                }
+            }
+
+            public void CheckIn(string flightNo, string passengerName)
+            {
+                var flight = FlightsSorted[flightNo];
+                var passenger = Bookings[flightNo].Find(p => p.Name == passengerName);
+
+                if (passenger != null)
+                {
+                    passenger.AddTrip($"{flightNo} to {flight.Destination}", flight.Destination);
+                    Console.WriteLine($" {passengerName} checked in to {flight}");
+                }
+                else
+                {
+                    Console.WriteLine(" Passenger not booked.");
+                }
+            }
+
+            public void UndoLastBooking()
+            {
+                if (BookingHistory.Count > 0)
+                {
+                    var (flightNo, passenger) = BookingHistory.Pop();
+                    Bookings[flightNo].Remove(passenger);
+                    Console.WriteLine($" Undo booking: {passenger.Name} removed from {flightNo}");
+                }
+                else
+                {
+                    Console.WriteLine(" No bookings to undo.");
+                }
+            }
+
+            public void ShowFlights()
+            {
+                Console.WriteLine("\n Available Flights:");
+                foreach (var f in FlightsSorted.Values)
+                    Console.WriteLine($"- {f}");
+            }
+
+            public void ShowBookings(string flightNo)
+            {
+                Console.WriteLine($"Bookings for Flight {flightNo}:");
+                if (Bookings.TryGetValue(flightNo, out var passengers))
+                {
+                    foreach (var p in passengers)
+                        Console.WriteLine($"- {p.Name}");
+                }
+            }
+
+            public void ShowStandBy(string flightNo)
+            {
+                Console.WriteLine($" Stand-by List for Flight {flightNo}:");
+                foreach (var p in StandByList[flightNo])
+                    Console.WriteLine($"- {p.Name}");
+            }
+        }
+        public static void Main(string[] args)
+        {
+            AirlineSystem airline = new AirlineSystem();
+
+            // Add flights
+            airline.AddFlight("AA101", "New York", 2);
+            airline.AddFlight("BB202", "Los Angeles", 3);
+
+            // Create passengers
+            Passenger alice = new Passenger("Alice");
+            Passenger bob = new Passenger("Bob");
+            Passenger charlie = new Passenger("Charlie");
+
+            // Book tickets
+            airline.BookTicket("AA101", alice);
+            airline.BookTicket("AA101", bob);
+            airline.BookTicket("AA101", charlie); // Should go to standby
+
+            // Check in
+            airline.CheckIn("AA101", "Alice");
+            airline.CheckIn("AA101", "Bob");
+
+            // Show flight details
+            airline.ShowFlights();
+            airline.ShowBookings("AA101");
+            airline.ShowStandBy("AA101");
+
+            // Undo last booking
+            airline.UndoLastBooking();
+            airline.ShowBookings("AA101");
+
+            // Show travel history and unique destinations
+            alice.ShowTravelHistory();
+            alice.ShowVisitedDestinations();
+        }
+    }
+}
